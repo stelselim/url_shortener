@@ -11,13 +11,22 @@ import (
 )
 
 func PostShortenController(c echo.Context) error {
-	shortUrl, err := service.ShortenURL()
+	var createShortenUrlRequestData model.CreateShortenURLRequestData
 
+	if err := c.Bind(&createShortenUrlRequestData); err != nil {
+		return helper.RespondError(
+			c,
+			http.StatusBadRequest,
+			"invalid request body.",
+		)
+	}
+
+	shortUrl, err := service.ShortenURL(createShortenUrlRequestData.OriginalUrl)
 	if err != nil {
 		return helper.RespondError(
 			c,
-			http.StatusCreated,
-			"URL could not be shortened.",
+			http.StatusInternalServerError,
+			err.Error(),
 		)
 	}
 
@@ -31,53 +40,87 @@ func PostShortenController(c echo.Context) error {
 	)
 }
 
-func GetShortenCodeController(c echo.Context) error {
-	originalUrl, err := service.GetOriginalUrl()
+func GetOriginalUrlController(c echo.Context) error {
+	shortCode := c.Param("shortCode")
+	fmt.Println("Short Code to check the stats:", shortCode)
 
+	if shortCode == "" {
+		return helper.RespondError(
+			c,
+			http.StatusBadRequest,
+			"Please, provide a shortcode",
+		)
+	}
+
+	originalUrl, err := service.GetOriginalUrl(shortCode)
 	if err != nil {
 		return helper.RespondError(
 			c,
-			http.StatusCreated,
-			"Original URL not found.",
+			http.StatusNotFound,
+			err.Error(),
 		)
 	}
 
 	fmt.Printf("Redirecting to %s...\n", originalUrl)
-	return c.Redirect(303, originalUrl)
+	// Increase the clicks for URL.
+	service.IncreaseClicksByOriginalUrl(originalUrl)
+
+	return c.Redirect(http.StatusPermanentRedirect, originalUrl)
 }
 
 func GetShortenCodeStatsController(c echo.Context) error {
-	stats, err := service.GetShortenedUrlStats()
+	shortCode := c.Param("shortCode")
+	fmt.Println("Short Code to check the stats:", shortCode)
+
+	if shortCode == "" {
+		return helper.RespondError(
+			c,
+			http.StatusBadRequest,
+			"Please, provide a shortcode",
+		)
+	}
+
+	stats, err := service.GetShortenedUrlStats(shortCode)
 	if err != nil {
 		return helper.RespondError(
 			c,
-			http.StatusCreated,
-			"Stats not found",
+			http.StatusNotFound,
+			err.Error(),
 		)
 	}
 
 	return helper.RespondSuccess(
 		c,
-		http.StatusCreated,
-		"Short URL deleted successfully",
+		http.StatusOK,
+		"Stats found successfully",
 		stats,
 	)
 }
 
 func DeleteShortenCodeController(c echo.Context) error {
+	shortCode := c.Param("shortCode")
+	fmt.Println("Short Code to be deleted:", shortCode)
 
-	err := service.DeleteShortenedUrl()
+	if shortCode == "" {
+		return helper.RespondError(
+			c,
+			http.StatusBadRequest,
+			"Please, provide a shortcode",
+		)
+	}
+
+	err := service.DeleteShortenedUrl(shortCode)
 	if err != nil {
 		return helper.RespondError(
 			c,
-			http.StatusCreated,
-			"URL Could not deleted",
+			http.StatusNotFound,
+			err.Error(),
 		)
 	}
 
 	return helper.RespondSuccess[any](
 		c,
-		http.StatusCreated,
+		http.StatusOK,
 		"Short URL deleted successfully",
 		nil,
 	)
