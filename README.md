@@ -3,7 +3,15 @@
 
 This project is a simple URL shortener service built with **Go (Echo)**. It allows users to generate short links, redirect to original URLs, view analytics, and manage shortened URLs.
 
-<br>
+
+## 🚀 Concepts
+- [X] Controller, Router, Services architecture
+- [X] Echo library for building RESTful APIs.  
+- [X] Create a Base Model Error and Response handling Errors, and HTTP Requests.
+- [X] Firestore usage as a NoSQL DB.
+- [X] Inject important values as environment variables.
+- [X] No Deployment, Local Running
+- [ ] Integration Tests
 
 ## 🔗 API Endpoints
 
@@ -87,12 +95,3 @@ DELETE /shorten/abc123
 ```
 
 ---
-
-## 🚀 List of Required Concepts
-- [X] Controller, Router, Services architecture
-- [X] Echo library for building RESTful APIs.  
-- [X] Create a Base Model Error and Response handling Errors, and HTTP Requests.
-- [X] Firestore usage as a NoSQL DB.
-- [X] Inject important values as environment variables.
-- [X] No Deployment, Local Running
-- [ ] Integration Tests
