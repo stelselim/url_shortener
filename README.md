@@ -1,7 +1,7 @@
 
 # 📌 URL Shortener API Documentation
 
-This project is a simple URL shortener service built with **Go (Gin)**. It allows users to generate short links, redirect to original URLs, view analytics, and manage shortened URLs.
+This project is a simple URL shortener service built with **Go (Echo)**. It allows users to generate short links, redirect to original URLs, view analytics, and manage shortened URLs.
 
 <br>
 
