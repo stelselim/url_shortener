@@ -89,12 +89,10 @@ DELETE /shorten/abc123
 ---
 
 ## 🚀 List of Required Concepts
-- [ ] Controller, Router, Services architecture
-- [ ] Echo library for building RESTful APIs.  
-- [ ] Create a Base Model Error and Response handling Errors, and HTTP Requests.
-- [ ] Firestore usage as a NoSQL DB.
-- [ ] Inject important values as environment variables.
-- [ ] No Deployment, Local Running
+- [X] Controller, Router, Services architecture
+- [X] Echo library for building RESTful APIs.  
+- [X] Create a Base Model Error and Response handling Errors, and HTTP Requests.
+- [X] Firestore usage as a NoSQL DB.
+- [X] Inject important values as environment variables.
+- [X] No Deployment, Local Running
 - [ ] Integration Tests
-- [ ] Rate limiting to avoid abuse
-- [ ] Expiry dates for short links

@@ -1,7 +1,5 @@
 package service
 
-// Use a service account
-
 import (
 	"context"
 	"fmt"
@@ -25,10 +23,9 @@ const (
 	shortenedUrlsCollectionName = "shortenedUrls"
 )
 
-func GetFirestoreClient(ctx context.Context) (*firestore.Client, error) {
+func GetFirestoreClient(ctx context.Context, options ...option.ClientOption) (*firestore.Client, error) {
 	initOnce.Do(func() {
-		serviceAccount := option.WithCredentialsFile("firebase_service_account.json")
-		app, err := firebase.NewApp(ctx, nil, serviceAccount)
+		app, err := firebase.NewApp(ctx, nil, options...)
 		if err != nil {
 			initErr = fmt.Errorf("failed to initialize firebase app: %w", err)
 		}
